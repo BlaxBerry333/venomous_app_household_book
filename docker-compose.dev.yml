@@ -1,0 +1,28 @@
+services:
+  # SSR Database ( PostgreSQL )
+  # ----------------------------------------------------------------------------------------------------
+  household_book_db:
+    image: postgres:latest
+    container_name: household_book_db
+    ports:
+      - "4500:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: household_book_db
+    volumes:
+      - household_book_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d household_book_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - venomous_apps_network
+
+volumes:
+  household_book_db:
+
+networks:
+  venomous_apps_network:
+    driver: bridge
